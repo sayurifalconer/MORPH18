@@ -1,0 +1,211 @@
+---
+API: 2
+OpenSesame: 3.1.4
+Platform: posix
+---
+set width 1024
+set uniform_coordinates yes
+set title "New experiment"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set round_decimals 2
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 18
+set font_italic no
+set font_family mono
+set font_bold no
+set experiment_path "/Volumes/hiplab/MORPH_18"
+set disable_garbage_collection yes
+set description "The main experiment item"
+set coordinates uniform
+set compensation 0
+set canvas_backend xpyriment
+set bidi no
+set background black
+
+define loop BlockPractice
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description "Repeatedly runs another item"
+	set cycles 10
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 mask YWVQBGMX
+	setcycle 0 prime insect
+	setcycle 0 target pants
+	setcycle 0 audio eat
+	setcycle 0 ITI 448
+	setcycle 1 mask GYGJJBDF
+	setcycle 1 prime weapon
+	setcycle 1 target run
+	setcycle 1 audio un
+	setcycle 1 ITI 200
+	setcycle 2 mask YJWFVJKV
+	setcycle 2 prime solid
+	setcycle 2 target web
+	setcycle 2 audio ob
+	setcycle 2 ITI 254
+	setcycle 3 mask JNVSTKTY
+	setcycle 3 prime coffee
+	setcycle 3 target map
+	setcycle 3 audio app
+	setcycle 3 ITI 416
+	setcycle 4 mask CPKQPMYY
+	setcycle 4 prime tiger
+	setcycle 4 target fan
+	setcycle 4 audio an
+	setcycle 4 ITI 379
+	setcycle 5 mask FFHSBHLK
+	setcycle 5 prime garden
+	setcycle 5 target bed
+	setcycle 5 audio ed
+	setcycle 5 ITI 367
+	setcycle 6 mask GDBBCXCM
+	setcycle 6 prime apple
+	setcycle 6 target desk
+	setcycle 6 audio ask
+	setcycle 6 ITI 342
+	setcycle 7 mask GKFYJTYT
+	setcycle 7 prime circus
+	setcycle 7 target moon
+	setcycle 7 audio in
+	setcycle 7 ITI 238
+	setcycle 8 mask VFDFJVVR
+	setcycle 8 prime album
+	setcycle 8 target salt
+	setcycle 8 audio alt
+	setcycle 8 ITI 227
+	setcycle 9 mask LDHYHQDC
+	setcycle 9 prime fungus
+	setcycle 9 target rain
+	setcycle 9 audio on
+	setcycle 9 ITI 353
+	run new_sequence
+
+define sketchpad ITI
+	set duration "[ITI]"
+	set description "Displays stimuli"
+
+define sketchpad Instructions
+	set start_response_interval no
+	set reset_variables no
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=serif font_italic=no font_size=18 html=yes show_if=always text="Welcome!<br /><br />This practice round will be a shortened version of the full experiment. In this experiment you will see a string <br />of random consonants on the screen, followed by a word. At the same time you will hear a spoken syllable through <br />the headphones.<br /><br />For each word, determine if the sound you hear rhymes with the word you see. After the word disappears, you <br />will have 1.5 seconds to make your response. If the word DOES rhyme, press one of the buttons on the back of <br />the controller with your RIGHT finger. If the word does NOT rhyme, press one of the buttons on the back of <br />the controller with your LEFT finger.<br /><br />After every 3 words, you will see something like this (--). This indicates that it is a blink break. Please try to <br />blink only during these breaks.<br /><br />This practice round consists of 10 words. When you complete the practice round, the experimenter will come back in <br />and you will begin the experiment itself.<br /><br />Press the spacebar to begin the practice round.<br />" x=0 y=0 z_index=0
+
+define sampler audio
+	set volume 1
+	set stop_after 0
+	set sample "[audio].wav"
+	set pitch 1
+	set pan 0
+	set fade_in 0
+	set duration 495
+	set description "Plays a sound file in .wav or .ogg format"
+
+define sketchpad blink
+	set duration 792
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="(--)" x=0 y=0 z_index=0
+
+define sketchpad complete
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="Congratulations!<br /><br />You have successfully completed the practice round.<br /><br />The experimenter will come back in and you will begin the full experiment  momentarily." x=0 y=0 z_index=0
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run getting_started always
+	run reset_counter always
+	run reset_counter_1 always
+	run Instructions always
+	run BlockPractice always
+	run complete always
+
+define notepad getting_started
+	__note__
+	Welcome to OpenSesame 3.1 "Jazzy James"!
+	If you are new to OpenSesame, it is a good idea to follow one of the tutorials,
+	which can be found on the documentation site:
+	- <http://osdoc.cogsci.nl/>
+	You can also check out the examples. These can be opened via:
+	- Menu -> Tools -> Example experiments.
+	And feel free to ask for help on the forum:
+	- <http://forum.cogsci.nl/>
+	Have fun with OpenSesame!
+	__end__
+	set description "A simple notepad to document your experiment. This plug-in does nothing."
+
+define inline_script inc_counter
+	set description "Executes Python code"
+	___run__
+	exp.set("counter", exp.get("counter")+1)
+	__end__
+	set _prepare ""
+
+define joystick joystick_response
+	set timeout 1500
+	set description "Collects input from a joystick or gamepad"
+	set allowed_responses ""
+	set _dummy no
+	set _device 0
+
+define sketchpad mask
+	set duration 495
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="[mask]" x=0 y=0 z_index=0
+
+define sequence new_sequence
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run inc_counter always
+	run mask always
+	run prime always
+	run target always
+	run audio always
+	run response_screen always
+	run joystick_response always
+	run blink "[counter]%3=0"
+	run ITI always
+
+define sketchpad prime
+	set duration 45
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="[prime]" x=0 y=0 z_index=0
+
+define inline_script reset_counter
+	set description "Executes Python code"
+	set _run ""
+	___prepare__
+	exp.set("counter", 0)
+	__end__
+
+define inline_script reset_counter_1
+	set description "Executes Python code"
+	___run__
+	exp.set("counter", 0)
+	__end__
+	set _prepare ""
+
+define sketchpad response_screen
+	set duration 0
+	set description "Displays stimuli"
+
+define sketchpad target
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=18 html=yes show_if=always text="[target]" x=0 y=0 z_index=0
+
